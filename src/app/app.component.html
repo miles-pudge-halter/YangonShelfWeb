@@ -1,0 +1,10 @@
+<app-nav-bar *ngIf="user"></app-nav-bar>
+<div  class="pusher">
+    <router-outlet></router-outlet>
+</div>
+
+<a *ngIf="user" (click)="showAddBook()" class="float" data-content="Add new book">
+    <app-add-book-modal *ngIf="user"></app-add-book-modal>
+<i style="margin-top:20px; margin-left:4px" class="large plus icon"></i>
+</a>
+<app-footer *ngIf="user"></app-footer>

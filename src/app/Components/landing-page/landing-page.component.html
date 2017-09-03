@@ -1,0 +1,150 @@
+<app-spinner *ngIf="loggingIn"></app-spinner>
+
+<div *ngIf="!loggingIn">
+
+  <div class="pusher">
+
+    <!--<div class="headerx">
+      <div id="headNav" class="ui container">
+        <div class="ui massive top fixed secondary network menu">
+          <a style="font-family: 'Poiret One'" class="item">
+            <img src="assets/shelf-only.png" /><b>yangon shelf</b>
+          </a>
+          <div id="rightMenu" class="right menu mobile hidden grid">
+            <a class="ui item">
+              Contact
+            </a>
+            <a class="ui item">
+              About Us
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="intro-header">
+        <span style="font-family: 'Poiret One' !important; font-size:70px;">Yangon Shelf</span>
+        <br>
+        <button (click)="login()" class="ui labeled icon blue button">
+          <i class="facebook f icon"></i>
+          Login with facebook
+        </button>
+      </div>
+    </div>-->
+    <div id="headNav" class="ui container">
+      <div class="ui massive secondary network menu">
+        <a style="font-family: 'Poiret One';font-weight:bolder;" class="item">
+            yangon shelf
+          </a>
+        <div style="font-family: 'Poiret One';" id="rightMenu" class="right menu mobile hidden grid">
+          <a class="ui item">
+              Contact
+            </a>
+          <a class="ui item">
+              About Us
+            </a>
+        </div>
+      </div>
+    </div>
+    <div class="headerx">
+
+      <div class="ui stackable two column grid">
+        <div class="ui six wide centered column">
+          <img id="logImg" class="ui image" src="assets/yng-shelf-logo.png">
+
+        </div>
+        <div class="ui six wide centered column">
+          <div id="rightCol" class="ui basic centered  segment">
+            <p>
+              A community built for bookworms,<br>by bookworms.
+            </p>
+            <button (click)="login()" class="ui labeled icon blue button">
+                <i class="facebook f icon"></i>
+                Login with facebook
+              </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+    <div style="background:#f8f8f8; padding:20px;margin-bottom:20px;">
+      <div class="ui container">
+        <div class="ui horizontal divider"><h3 class="bodySection">A Simple Sharing Platform</h3></div>
+        <div class="ui stackable three column centered grid">
+          <div class="five wide column">
+            <img style="padding:65px 65px 10px 65px;" class="ui image bookpile" src="assets/bookpile.png">
+            <p style="text-align: center;" class="bodyPara">Share you books with the community.</p>
+          </div>
+          <div class="five wide column">
+            <img style="padding:65px 65px 10px 65px;" class="ui image searchpile" src="assets/searchpile.png">
+            <p style="text-align: center;" class="bodyPara">Search what suits you.</p>
+          </div>
+          <div class="five wide column">
+            <img style="padding:65px 65px 10px 65px;" class="ui image tradepile" src="assets/tradepile.png">
+            <p style="text-align: center;" class="bodyPara">Trade what you love.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="ui container">
+        <div class="ui stackable two column grid">
+          <div class="row">
+            <div class="ui seven wide column">
+              <h3 class="bodySection">Show us what you have</h3>
+              <div class="ui divider"></div>
+              <div class="bodyPara ui list">
+                <div class="item">Post the books you own. See what others have.</div>
+                <div class="item">Everything is categorized so that you can follow what you love.</div>
+                <div class="item">Fiction? Romance? Horror? Science?</div>
+                <div class="item">Follow a wide range of categories to see what interests you most.</div>
+              </div>
+              <img src="assets/search.png" class="ui image">
+              <img src="assets/category.png" class="ui image">
+            </div>
+            <div class="ui nine wide column">
+              <img class="ui image" src="assets/booklist2.png">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="ui six wide column">
+              <h3 class="bodySection">Trade what you love</h3>
+              <div class="ui divider"></div>
+              <div class="bodyPara ui list">
+                <div class="item">Trading is as easy as drag &amp; drop.</div>
+                <div class="item">Give what you will.</div>
+                <div class="item">Ask for what you want.</div>
+              </div>
+            </div>
+            <div class="ui ten wide column">
+              <img class="ui image" src="assets/trade.png">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+    <!--<div *ngIf="enableDimmer()"></div>-->
+    <!--<div class="ui container">
+      <div class="ui horizontal divider">Take a peek</div>
+      <div class="column">
+        <div class="ui eight doubling  cards">
+          <div *ngFor="let book of sampleBooks" class="ui  small raised card">
+            <div style="padding:5px !important;" class="content">
+
+              <div class="ui fluid image">
+                <div class="ui sample dimmer">
+                  <div class="content">
+                    <div class="center">
+                      <p>{{book.genres}}</p>
+                    </div>
+                  </div>
+                </div>
+                <img src="{{book.bookCover}}">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>-->
+  </div>
+
+</div>

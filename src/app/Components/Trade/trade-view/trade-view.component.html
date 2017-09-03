@@ -1,0 +1,116 @@
+<div style="margin-top:75px;" class="ui container">
+  <h2 class="webTrade">Drag &amp; Drop books to start trading</h2>
+  <div class="webTrade ui stackable two column centered grid">
+
+    <!-- SIDE 1 -->
+    <div class="column">
+      <div *ngIf="books" class="ui horizontal divider">
+        <h3>You</h3>
+      </div>
+      <div class="ui piled segments">
+        <div *ngIf="currentUser" class="ui yellow segment">
+          <h3 *ngIf="otherUser">You will give these books to {{otherUser.displayName}}</h3>
+          <div id="giving1" [dragula]='"bag1"' class="ui two stackable cards">
+            <div style="visibility:hidden;" class="ui mini raised card"></div>
+          </div>
+        </div>
+        <app-spinner *ngIf="!currentUser"></app-spinner>
+        <div *ngIf="currentUser" class="ui green segment">
+          <h3>Your books</h3>
+          <app-spinner *ngIf="!books"></app-spinner>
+          <div id="have1" [dragula]='"bag1"' [dragulaModel]='books' class="ui two stackable cards">
+            <div *ngFor="let book of books" class="ui mini raised card" id="{{book.$key}}">
+              <div style="padding-left: 5px;" class="content">
+                <div class="left floated ui mini image">
+                  <img *ngIf="!book.bookCover" src="assets/dummyCover.png">
+                  <img *ngIf="book.bookCover" src="{{book.bookCover}}}">
+                </div>
+                <div class="header">{{book.title}}</div>
+                <div class="meta">{{book.author}}</div>
+              </div>
+            </div>
+            <div style="visibility:hidden;" class="ui mini raised card"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--<div class="divider-column">
+      <div class="ui vertical divider">
+        <h1><i class="large exchange icon"></i></h1>
+      </div>
+    </div>-->
+    <!-- SIDE 2 -->
+    <div class="column">
+      <div *ngIf="otherUser" class="ui horizontal divider">
+        <h3>{{otherUser.displayName}}</h3>
+      </div>
+      <div class="ui piled segments">
+        <div *ngIf="otherUser" class="ui yellow segment">
+          <h3>You want these books from {{otherUser.displayName}}</h3>
+          <div id="giving2" [dragula]='"bag2"' class="ui two stackable cards">
+            <div class="ui mini raised card" *ngFor="let rb of requestedBook" id="{{rb.$key}}">
+              <div style="padding-left: 5px;" class="content">
+                <div class="left floated ui mini image">
+                  <img *ngIf="!rb.bookCover" src="assets/dummyCover.png">
+                  <img *ngIf="rb.bookCover" src="{{rb.bookCover}}}">
+                </div>
+                <div class="header">{{rb.title}}</div>
+                <div class="meta">{{rb.author}}</div>
+              </div>
+            </div>
+            <div style="visibility:hidden;" class="ui mini raised card"></div>
+          </div>
+        </div>
+        <app-spinner *ngIf="!otherBooks"></app-spinner>
+        <div *ngIf="otherUser" class="ui green segment">
+          <h3>{{otherUser.displayName}}'s books</h3>
+          <app-spinner *ngIf="!otherUser"></app-spinner>
+          <div id="have2" [dragula]='"bag2"' [dragulaModel]='otherBooks' class="ui two stackable cards">
+            <div *ngFor="let book of otherBooks" class="ui mini raised card" id="{{book.$key}}">
+              <div style="padding-left: 5px;" class="content">
+                <div class="left floated ui mini image">
+                  <img *ngIf="!book.bookCover" src="assets/dummyCover.png">
+                  <img *ngIf="book.bookCover" src="{{book.bookCover}}}">
+                </div>
+                <div class="header">{{book.title}}</div>
+                <div class="meta">{{book.author}}</div>
+              </div>
+            </div>
+            <div style="visibility:hidden;" class="ui mini raised card"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="three wide column">
+      <button [ngClass]="{'disabled':!(giving1.length>0) || !(giving2.length>0)}" (click)="reqTrade()" class="ui fluid inverted green button">Offer Trade</button>
+    </div>
+  </div>
+  <div class="mobileTrade ui stackable two column centered grid"> 
+    <div class="column">
+      <h3 *ngIf="otherUser">Select books you'd like to give {{otherUser.displayName}}</h3>
+      <select [(ngModel)]="side1list" class="ui fluid search multiple dropdown" multiple="">
+          <option *ngFor="let book of books" value="{{book.$key}}">
+            <img *ngIf="book.bookCover" class="ui image" src="{{book.bookCover}}">
+            <img *ngIf="!book.bookCover" class="ui image" src="assets/dummyCover.png">
+            {{book.title}}
+          </option>
+      </select>
+    </div>
+    <div  class="column">
+      <h3 *ngIf="otherUser">Select books you'd like to request from {{otherUser.displayName}}</h3>
+      <select [(ngModel)]="side2list" class="ui fluid search multiple dropdown" multiple="">
+          <option *ngFor="let book of cleanOtherBooks" value="{{book.$key}}">
+            <img *ngIf="book.bookCover" class="ui image" src="{{book.bookCover}}">
+            <img *ngIf="!book.bookCover" class="ui image" src="assets/dummyCover.png">
+            {{book.title}}
+          </option>
+      </select>
+    </div>
+    <div class="column" *ngIf="!books || !otherBooks">
+      <app-spinner *ngIf="!books || !otherBooks"></app-spinner>
+    </div>
+    <div *ngIf="books && otherBooks" class="column">
+      <button [ngClass]="{'disabled':side1list.length<1 || side2list.length<1}" (click)="reqTradeMobile()" class="ui fluid inverted green button">Offer Trade</button>
+    </div>
+  </div>
+</div>

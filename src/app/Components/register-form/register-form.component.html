@@ -1,0 +1,59 @@
+<div style="margin: auto; position: absolute; top: 0; left: 0; bottom: 0; right: 0;" class="ui container">
+  <div class="row">
+
+  </div>
+  <div class="ui horizontal divider">Just a bit more details and we're good to go!</div>
+  <div class="ui middle aligned  grid">
+    <div class="ui column">
+      <div class="ui fluid centered card">
+        <div class="content">
+          <form [formGroup]="regForm" class="ui form" (ngSubmit)="onSubmit()">
+            <div class="field">
+              <label>Name</label>
+              <div *ngIf="name.errors && (name.touched || name.dirty)" class="ui small red compact message">
+                <p>I'm sure you have a better name.</p>
+              </div>
+              <input [formControl]="name" type="text" name="name" placeholder="Name">
+            </div>
+            <div class="field">
+              <label>Email</label>
+              <div *ngIf="email.errors && (email.touched || email.dirty)" class="ui small red compact message">
+                <p>We won't send spam mails. We promise. Please fill your actual email address.</p>
+              </div>
+              <input [formControl]="email" required type="text" name="email" placeholder="Email">
+            </div>
+            <div class="field">
+              <label>Phone</label>
+              <div *ngIf="(phone.errors ||!phoneFormat) && (phone.touched || phone.dirty)" class="ui small red compact message">
+                <p>Invalid phone number.</p>
+              </div>
+              <input [formControl]="phone" required type="text" name="phone" placeholder="Phone number">
+              <div class="ui teal compact message">
+                <p>Your phone number is kept private. It will only be visible to the person you agreed to trade with.</p>
+              </div>
+            </div>
+            <div class="field">
+              <label>Address</label>
+              <!--<input [formControl]="address" required type="text" name="address" placeholder="Address">-->
+              <select [formControl]="address" name="address" class="ui fluid dropdown">
+                <option *ngFor="let t of townshipList" value="{{t.name}} ({{t.name_mm}})" class="ui fluid dropdown">
+                  {{t.name}} ({{t.name_mm}})
+                </option>
+              </select>
+              <div class="ui teal compact message">
+                <p>You may just fill up the township you live. This is so that other users can consider trading with you according to you location.</p>
+              </div>
+            </div>
+            <div class="field">
+              <label>Which categories are you interested in?</label>
+              <select  [formControl]="genres" class="ui fluid search multiple dropdown" multiple="">
+                <option *ngFor="let g of listGenres" value="{{g}}">{{g}}</option>
+              </select>
+            </div>
+            <input [ngClass]="{disabled: !phoneFormat||regForm.invalid||genres.value.length<1}" type="submit" class="disabled ui right floated large inverted blue button" value="Submit"/>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

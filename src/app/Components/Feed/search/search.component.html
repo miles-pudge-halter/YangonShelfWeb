@@ -1,0 +1,91 @@
+<div style="margin-top:75px;" class="ui container">
+  <div class="ui stackable three column grid">
+    <div class="six wide column">
+      <div class="ui large fluid icon input">
+        <input (keyup.enter)="search()" [(ngModel)]="query" name="query" type="text" placeholder="Book title or author...">
+        <i class="search icon"></i>
+      </div>
+    </div>
+
+    <div class="six wide column">
+      <select (keyup.enter)="search()" id="combobox" class="ui fluid search multiple dropdown" [(ngModel)]="category" name="category"
+        multiple="">
+        <option *ngFor="let g of genresList" value="{{g}}">{{g}}</option>
+            <!--<option value="Romance">Romance</option>
+              <option value="Fiction">Fiction</option>
+              <option value="Horror">Horror</option>
+              <option value="Biography">Biography</option>
+              <option value="Science">Science</option>
+              <option value="Politics">Politics</option>
+              <option *ngIf="initJquery()"  value="Fantasy">Fantasy</option>-->
+          </select>
+    </div>
+    <div class="four wide column">
+      <button [ngClass]="{'disabled':!formCheck()}" (click)="search()" id="searchBtn" class="right floated ui animated blue button">
+        <div class="visible content">Search</div>
+        <div class="hidden content">
+          <i class="search icon"></i>
+        </div>
+      </button>
+
+    </div>
+  </div>
+</div>
+<!--<app-search-result *ngIf="searchResults" [(searchResults)]="searchResults"></app-search-result>-->
+<div *ngIf="searchResults" class="ui container">
+  <div class="ui horizontal divider">
+    <h3>Search Results
+      <i (click)="toggleView()" *ngIf="books.length > 0 && !visibility" class="hide icon"></i>
+      <i (click)="toggleView()" *ngIf="books.length > 0 && visibility" class="unhide icon"></i>
+    </h3>
+
+  </div>
+</div>
+<div class="ui container" *ngIf="searchResults && searchResults.length<1">
+  <br>
+  <div class="ui segment">
+    <h3 style="text-align: center;">No books found.</h3>
+  </div>
+</div>
+<div style="display:none;" id="searchResults" class="ui container">
+  <div id="searchCards" *ngIf="searchResults && searchResults.length>0" class="ui three stackable cards">
+    <div *ngFor="let book of books" class="ui fluid  card">
+      <div class="content">
+        <div *ngIf="user" class="left floated tiny ui image">
+          <div *ngIf="user.uid!=book.book.owner && !book.book.currentHolder && !book.book.pending" class="ui bookItem dimmer">
+            <div class="content">
+              <div class="center">
+                <button (click)="reqTrade(book.book.$key, book.book.owner)" class="ui inverted mini green button">Request</button>
+              </div>
+            </div>
+          </div>
+          <img *ngIf="!book.book.bookCover" src="assets/dummyCover.png">
+          <img *ngIf="book.book.bookCover" src="{{book.book.bookCover}}}">
+        </div>
+        <div class="header">{{book.book.title}}</div>
+        <div class="meta">
+          <a class="group">{{book.book.author}}</a>
+        </div>
+        <div *ngIf="book.book.description" class="description" style="clear:right;">{{book.book.description}}</div>
+        <div *ngIf="!book.book.description" class="description" style="clear:right;">No description. :(</div>
+        <br>
+        <div *ngFor="let genres of book.book.genres" class="ui mini label">{{genres}}</div>
+        <!--<div class="ui mini blue tag label">Fiction</div>
+              <div class="ui mini olive tag label">Teen</div>-->
+      </div>
+      <div class="extra content">
+        <a (click)="goToProfile(book.owner.$key)" class="right floated created">{{book.owner.displayName}}</a>
+        <div *ngIf="!book.book.currentHolder && !book.book.pending" class="friends">
+          <i class="green circle icon"></i>Available
+        </div>
+        <div *ngIf="book.book.currentHolder" class="friends">
+          <i class="red circle icon"></i>Unavailable
+        </div>
+        <div *ngIf="!book.book.currentHolder && book.book.pending" class="friends">
+          <i class="yellow circle icon"></i>In trade
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br *ngIf="searchResults">

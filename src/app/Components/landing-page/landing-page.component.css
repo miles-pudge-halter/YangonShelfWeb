@@ -1,0 +1,88 @@
+.bookpile:hover{
+  content:url('/assets/bookpile_hover.png');
+}
+.searchpile:hover{
+  content:url('/assets/searchpile_hover.png');
+}
+.tradepile:hover{
+  content:url('/assets/tradepile_hover.png');
+}
+.headerx {
+  /*background :#ededed;*/
+  height: 100vh;
+  /*background-image : url(/assets/bookworms.png);*/
+  background-size: cover;
+  background-position: center;
+
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center;
+
+  /*transition:all 1s ease-in-out;*/
+  animation:blink normal 2s ; 
+  -webkit-animation:blink normal 5s;
+}
+
+.intro-header {
+  line-height: 50px;
+  text-align: center;
+  margin-bottom: 75px;
+}
+.bodySection{
+  font-family:'Poiret One'!important;
+  font-size:25px;
+}
+.bodyPara{
+  font-family: 'Raleway'!important;
+  font-size: 1.2em;
+}
+
+@keyframes blink {
+  0%{opacity:0;} 
+  /*50%{opacity:0;} */
+  100%{opacity:1;}} 
+@-webkit-keyframes blink {
+  0%{opacity:1;} 
+  50%{opacity:0;} 
+  100%{opacity:1;}
+  }
+
+  /*@media screen and (max-width: 630px) {
+  #headNav {
+    visibility: hidden;
+    float: left;
+          margin: 10px auto 5px 20px;
+          width: 28%;
+    display: none;
+  }
+}*/
+@media screen and (min-width: 800px){
+  #rightCol{
+    margin-top:35%;
+    font-family: 'Poiret One';
+    font-size:30px;
+    font-weight:bold;
+  }
+  #headNav{
+    visibility: hidden;
+    display: none;
+  }
+}
+@media screen and (max-width: 800px){
+  #rightCol{
+    font-family: 'Poiret One';
+    font-size:22px;
+    font-weight:bold;
+  }
+}

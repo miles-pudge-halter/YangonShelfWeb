@@ -1,0 +1,52 @@
+{
+  "name": "bookworms-hub",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/common": "^4.3.6",
+    "@angular/compiler": "^4.3.6",
+    "@angular/core": "^4.3.6",
+    "@angular/forms": "^4.3.6",
+    "@angular/http": "^4.3.6",
+    "@angular/platform-browser": "^4.3.6",
+    "@angular/platform-browser-dynamic": "^4.3.6",
+    "@angular/router": "^4.3.6",
+    "angularfire2": "^4.0.0-rc0",
+    "core-js": "^2.5.0",
+    "firebase": "^3.6.6",
+    "knayi-myscript": "^2.2.0",
+    "libphonenumber-js": "^0.4.27",
+    "ng2-dragula": "^1.5.0",
+    "rxjs": "^5.4.3",
+    "webpack": "^2.2.0",
+    "zone.js": "0.8.14"
+  },
+  "devDependencies": {
+    "@angular/cli": "1.2.4",
+    "@angular/compiler-cli": "^4.3.6",
+    "@types/jasmine": "2.5.38",
+    "@types/node": "^6.0.88",
+    "codelyzer": "~2.0.0",
+    "jasmine-core": "~2.5.2",
+    "jasmine-spec-reporter": "~3.2.0",
+    "karma": "~1.4.1",
+    "karma-chrome-launcher": "~2.1.1",
+    "karma-cli": "~1.0.1",
+    "karma-coverage-istanbul-reporter": "^0.2.0",
+    "karma-jasmine": "~1.1.0",
+    "karma-jasmine-html-reporter": "^0.2.2",
+    "protractor": "~5.1.0",
+    "ts-node": "~2.0.0",
+    "tslint": "~4.5.0",
+    "typescript": "~2.2.0"
+  }
+}

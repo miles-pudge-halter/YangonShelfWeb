@@ -1,0 +1,118 @@
+<div class="ui container">
+  <div class="ui stackable two column  grid">
+    <div class="ui stackable eleven wide column">
+      <!-- INTERESTED BOOKS -->
+      <div class="column">
+        <h3 style="text-align:right;">Books you might be interested in</h3>
+        <div class="ui divider"></div>
+        <br>
+        <app-spinner *ngIf="relatedBooks.length<1 && !noBooks"></app-spinner>
+        <div *ngIf="relatedBooks.length<1 && noBooks" class="ui segment">
+          <h3 style="text-align:center;">No books yet. Add yours and make the community alive!</h3>
+        </div>
+        <div *ngIf="enableDimmer()"></div>
+        <!-- CARD 1 START -->
+        <div class="ui two stackable cards">
+          <div *ngFor="let book of relatedBooks" class="ui fluid raised card">
+            <div class="content">
+              <div *ngIf="user" class="left floated tiny ui image">
+                <div *ngIf="user.uid!=book.book.owner && !book.book.currentHolder && !book.book.pending" class="ui bookItem dimmer">
+                  <div class="content">
+                    <div class="center">
+                      <button (click)="reqTrade(book.book.$key, book.book.owner)" class="ui inverted mini green button">Request</button>
+                    </div>
+                  </div>
+                </div>
+                <img *ngIf="!book.book.bookCover" src="assets/dummyCover.png">
+                <img *ngIf="book.book.bookCover" src="{{book.book.bookCover}}}">
+              </div>
+              <div class="header">{{book.book.title}}</div>
+              <div class="meta">
+                <a class="group">{{book.book.author}}</a>
+              </div>
+              <div *ngIf="book.book.description" class="description" style="clear:right;">{{book.book.description}}</div>
+              <div *ngIf="!book.book.description" class="description" style="clear:right;">No description. :(</div>
+              <br>
+              <div *ngFor="let genres of book.book.genres" class="ui mini label">{{genres}}</div>
+              <!--<div class="ui mini blue tag label">Fiction</div>
+              <div class="ui mini olive tag label">Teen</div>-->
+            </div>
+            <div class="extra content">
+              <a (click)="goToProfile(book.owner.$key)" class="right floated created">{{book.owner.displayName}}</a>
+              <div *ngIf="!book.book.currentHolder && !book.book.pending" class="friends">
+                <i class="green circle icon"></i>Available
+              </div>
+              <div *ngIf="book.book.currentHolder" class="friends">
+                <i class="red circle icon"></i>Unavailable
+              </div>
+              <div *ngIf="!book.book.currentHolder && book.book.pending" class="friends">
+                <i class="yellow circle icon"></i>In trade
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <br>
+      <!-- ALL BOOKS -->
+
+
+    </div>
+    <div class="ui stackable five wide column">
+      <h3 style="text-align:right;">Trending posts</h3>
+      <div class="ui divider"></div>
+      <div class="ui segment">
+        <h4 style="text-align:center;">Coming soon!</h4>
+      </div>
+    </div>
+    <div class="ui stackable sixteen wide column">
+      <h3>All Books</h3>
+      <div class="ui divider"></div>
+      <br>
+      <app-spinner *ngIf="books.length<1 && !noBooks"></app-spinner>
+      <div *ngIf="books.length<1 && noBooks" class="ui segment">
+        <h3 style="text-align:center;">No books yet. Add yours and make the community alive!</h3>
+      </div>
+      <div *ngIf="enableDimmer()"></div>
+      <!-- CARD 1 START -->
+      <div class="ui three stackable cards">
+        <div *ngFor="let book of books" class="ui fluid raised card">
+          <div class="content">
+            <div *ngIf="user" class="left floated tiny ui image">
+              <div *ngIf="user.uid!=book.book.owner && !book.book.currentHolder && !book.book.pending" class="ui bookItem dimmer">
+                <div class="content">
+                  <div class="center">
+                    <button (click)="reqTrade(book.book.$key, book.book.owner)" class="ui inverted mini green button">Request</button>
+                  </div>
+                </div>
+              </div>
+              <img *ngIf="!book.book.bookCover" src="assets/dummyCover.png">
+              <img *ngIf="book.book.bookCover" src="{{book.book.bookCover}}}">
+            </div>
+            <div class="header">{{book.book.title}}</div>
+            <div class="meta">
+              <a class="group">{{book.book.author}}</a>
+            </div>
+            <div *ngIf="book.book.description" class="description" style="clear:right;">{{book.book.description}}</div>
+            <div *ngIf="!book.book.description" class="description" style="clear:right;">No description. :(</div>
+            <br>
+            <div *ngFor="let genres of book.book.genres" class="ui mini label">{{genres}}</div>
+            <!--<div class="ui mini blue tag label">Fiction</div>
+              <div class="ui mini olive tag label">Teen</div>-->
+          </div>
+          <div class="extra content">
+            <a (click)="goToProfile(book.owner.$key)" class="right floated created">{{book.owner.displayName}}</a>
+            <div *ngIf="!book.book.currentHolder && !book.book.pending" class="friends">
+              <i class="green circle icon"></i>Available
+            </div>
+            <div *ngIf="book.book.currentHolder" class="friends">
+              <i class="red circle icon"></i>Unavailable
+            </div>
+            <div *ngIf="!book.book.currentHolder && book.book.pending" class="friends">
+              <i class="yellow circle icon"></i>In trade
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,305 @@
+<app-edit-profile *ngIf="presentingUser" [user]="presentingUser"></app-edit-profile>
+<div style="margin-top:75px;" class="ui container">
+  <div class="ui stackable two column grid">
+    <div class="centered column">
+      <app-spinner *ngIf="!presentingUser"></app-spinner>
+
+      <div *ngIf="presentingUser" class="ui items">
+        <div class="item">
+          <div class="ui small image">
+            <img src="http://graph.facebook.com/{{presentingUser.fbID}}/picture?type=large">
+          </div>
+          <div class="content">
+            <div class="header">Details of {{presentingUser.displayName}}
+            </div>
+            <button (click)="editProfile()" *ngIf="checkUser()" class="right floated inverted ui mini blue button">
+                  <i class="write icon"></i>Edit
+                </button>
+            <div class="ui divider"></div>
+            <div class="meta">
+              <div class="ui large very relaxed list">
+                <div class="item"><i class="mail icon"></i> &nbsp;Email : {{presentingUser.email}}</div>
+                <div class="item" *ngIf="checkUser()">
+                  <p><i class="phone icon"></i> &nbsp;Phone : {{presentingUser.phone}} <span style="color:red;">(Private)</span></p>
+                </div>
+                <div class="item"><i class="map icon"></i> &nbsp; Location : {{presentingUser.address}}</div>
+                <div class="item"><i class="left quote icon"></i> &nbsp; Favorite quote : {{presentingUser.quote}}</div>
+              </div>
+            </div>
+            <div class="description">
+              <p></p>
+            </div>
+            <div class="extra">
+              Follows:<br>
+              <a *ngFor="let g of presentingUser.genres" class="ui tiny label">{{g}}</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- Trades -->
+    <div *ngIf="currentUser && checkUser()" class="column">
+      <div class="ui segments">
+        <div class="ui segment">
+          <div class="content">
+            <h3>Trades requested to you</h3>
+            <app-spinner *ngIf="rt1.length<1 && !noTradeToYou"></app-spinner>
+            <div *ngIf="noTradeToYou && rt1.length<1" class="ui segment">
+              <h3>No trades requested to you</h3>
+            </div>
+            <div *ngIf="rt1" class="ui very relaxed animated selection list">
+              <div *ngFor="let item of rt1" class="item">
+
+                <i *ngIf="item.trade.status=='accepted'" class="yellow hourglass half icon"></i>
+                <i *ngIf="item.trade.status=='confirmed'" class="green checkmark icon"></i>
+                <i *ngIf="item.trade.status=='denied'" class="red ban icon"></i>
+                <i *ngIf="item.trade.status=='failed'" class="red warning sign icon"></i>
+
+                <div [routerLink]="['/trade',item.trade.$key]" class=" content">
+                  <a>{{item.requester.displayName}}</a> requested <a>{{item.books.join(', ')}}</a> from you.
+                  <b *ngIf="item.trade.status=='accepted'">
+                    Call <a>{{item.requester.phone}}</a> to get in touch with the requester.
+                  </b>
+                  <b *ngIf="item.trade.status=='failed'&&item.trade.requesteeFail">
+                    You marked this trade as 'Failed'.
+                  </b>
+                  <b *ngIf="item.trade.status=='failed'&&item.trade.requesterFail">
+                    {{item.requester.displayName}} marked this trade as 'Failed'.
+                  </b>
+                </div>
+                <div *ngIf="item.trade.status=='accepted' && item.trade.requesteeConfirm==false" class="right floated extra content">
+                  <button (click)="showTradeConfirm(item.trade.$key)" class="ui mini teal button">Confirm</button>
+                  <button (click)="showTradeDeny(item.trade.$key)" class="ui mini red button">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ui segment">
+          <div class="content">
+            <h3>Trades requested by you</h3>
+            <app-spinner *ngIf="rt2.length<1 && !noTradeByYou"></app-spinner>
+            <div *ngIf="noTradeByYou && rt2.length<1" class="ui segment">
+              <h3>No trades requested by you</h3>
+            </div>
+            <div *ngIf="rt2" class="ui very relaxed animated selection list">
+              <div *ngFor="let item of rt2" class="item">
+                <i *ngIf="item.trade.status=='accepted'" class="yellow hourglass half icon"></i>
+                <i *ngIf="item.trade.status=='confirmed'" class="green checkmark icon"></i>
+                <i *ngIf="item.trade.status=='denied'" class="red  ban icon"></i>
+                <i *ngIf="item.trade.status=='failed'" class="red warning sign icon"></i>
+                <div class="content">
+                  You requested <a>{{item.books.join(', ')}}</a> from <a>{{item.requestee.displayName}}</a>.
+                  <b *ngIf="item.trade.status=='accepted'">
+                    Call <a>{{item.requestee.phone}}</a> to get in touch with the owner.
+                  </b>
+                  <b *ngIf="item.trade.status=='failed'&&item.trade.requesterFail">
+                    You marked this trade as 'Failed'.
+                  </b>
+                  <b *ngIf="item.trade.status=='failed'&&item.trade.requesteeFail">
+                    Trade failed.
+                  </b>
+                </div>
+                <div *ngIf="item.trade.status=='accepted' && item.trade.requesterConfirm==false" class="right floated extra content">
+                  <button (click)="showTradeConfirm(item.trade.$key)" class="ui mini teal button">Confirm</button>
+                  <button (click)="showTradeDeny(item.trade.$key)" class="ui mini red button">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div *ngIf="currentUser && !checkUser()">
+  <div *ngIf="enableDimmer()"></div>
+</div>
+<!-- Your books -->
+<div class="ui container">
+  <div class="ui centered grid">
+    <div class="column">
+      <app-spinner *ngIf="!ownedBooks"></app-spinner>
+      <div *ngIf="ownedBooks">
+        <div *ngIf="checkUser()" class="ui horizontal divider">
+          <h3>Your Books</h3>
+        </div>
+        <div *ngIf="!checkUser()" class="ui horizontal divider">
+          <h3>{{presentingUser.displayName}}'s books</h3>
+        </div>
+        <div *ngIf="ownedBooks.length>0" class="ui three stackable cards">
+          <div *ngFor="let book of ownedBooks" class="ui fluid raised card">
+            <!--<app-delete-modal [book]="book"></app-delete-modal>-->
+            <div class="content">
+              <div class="left floated tiny ui image">
+                <div *ngIf="!book.currentHolder" class="profileDimmer ui dimmer">
+                  <div class="content">
+                    <div class="center">
+                      <button (click)="reqTrade(book.$key,presentingUser.$key)" class="ui inverted mini green button">Request</button>
+                    </div>
+                  </div>
+                </div>
+                <img *ngIf="book.bookCover" src="{{book.bookCover}}">
+                <img *ngIf="!book.bookCover" src="assets/dummyCover.png">
+              </div>
+              <i (click)="returnConfirm(book)" *ngIf="book.currentHolder && checkUser()" class="right floated green large exchange link icon"></i>
+              <i (click)="deleteConfirm(book)" *ngIf="!book.currentHolder && checkUser() && !book.pending" class="right floated red large trash link icon"></i>
+              <div class="header">{{book.title}}</div>
+              <div class="meta">
+                <a class="group">{{book.author}}</a>
+              </div>
+              <div class="description" style="clear:right;">{{book.description}}</div>
+              <br>
+              <div *ngFor="let genres of book.genres" class="ui mini tag label">{{genres}}</div>
+            </div>
+            <div class="extra content">
+              <a class="right floated created">{{presentingUser.displayName}}</a>
+              <div *ngIf="!book.currentHolder && !book.pending" class="friends">
+                <i class="green circle icon"></i>Available
+              </div>
+              <div *ngIf="book.currentHolder" class="friends">
+                <i class="red circle icon"></i>Unavailable
+              </div>
+              <div *ngIf="!book.currentHolder && book.pending" class="friends">
+                <i class="yellow circle icon"></i>In trade
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="ownedBooks.length<1" class="ui segment">
+          <h3 style="text-align:center;">You don't have any books with you.</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Borrowed books -->
+<div class="ui container">
+  <div class="ui centered grid">
+    <div class="column">
+      <div class="ui horizontal divider">
+        <h3>Borrowed Books</h3>
+      </div>
+      <app-spinner *ngIf="borrowedBooks.length<1 && !noBorrowedBooks"></app-spinner>
+      <div *ngIf="borrowedBooks && !noBorrowedBooks" class="ui three stackable cards">
+        <div *ngFor="let book of borrowedBooks" class="ui fluid raise card">
+          <div class="content">
+            <div class="left floated tiny ui image">
+              <div class="ui dimmer">
+                <div class="content">
+                  <div class="center">
+                    <button onclick="showModal()" class="ui mini teal button">Request</button>
+                  </div>
+                </div>
+              </div>
+              <img *ngIf="book.book.bookCover" src="{{book.book.bookCover}}">
+              <img *ngIf="!book.book.bookCover" src="assets/dummyCover.png">
+            </div>
+            <div class="header">{{book.book.title}}</div>
+            <div class="meta">
+              <a class="group">{{book.book.author}}</a>
+            </div>
+            <div class="description" style="clear:right;">{{book.book.description}}</div>
+            <br>
+            <div *ngFor="let genres of book.book.genres" class="ui mini tag label">{{genres}}</div>
+          </div>
+          <div class="extra content">
+            <a (click)="goToProfile(book.owner.$key)" class="right floated created">{{book.owner.displayName}}</a>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="noBorrowedBooks" class="ui segment">
+        <h3 style="text-align:center;">No borrowed books</h3>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Trade Confirm Modal -->
+<div id="tradeConfirmModal" class="ui basic modal">
+  <div class="ui icon header">
+    <i class="green exchange icon"></i> Book Exchange Confirmation
+  </div>
+  <div *ngIf="requestingBooks && givingBooks" class="content">
+    <p style="text-align:center;">
+      Confirm this only when you have received your requested books and you have given the other participant the requesting books.
+      <br> Trading <b>{{requestingBooks.join(', ')}}</b> for <b>{{givingBooks.join(', ')}}</b>.
+    </p>
+  </div>
+  <div class="actions">
+    <div class="ui red basic cancel inverted button">
+      <i class="remove icon"></i> Cancel
+    </div>
+    <div *ngIf="requestingBooks && givingBooks" (click)="confirmTrade(confirmingTrade)" class="ui green inverted button">
+      <i class="checkmark icon"></i> Confirm
+    </div>
+  </div>
+</div>
+
+<!-- Trade Deny Modal -->
+<div id="tradeDenyModal" class="ui basic modal">
+  <div class="ui icon header">
+    <i class="red warning sign icon"></i> Book Exchange Cancellation
+  </div>
+  <div *ngIf="requestingBooks && givingBooks" class="content">
+    <p style="text-align:center;">
+      Has the accepted trade failed? Are you sure you want to mark the trade as a failed trade?
+      <br> Trading <b>{{requestingBooks.join(', ')}}</b> for <b>{{givingBooks.join(', ')}}</b>.
+    </p>
+  </div>
+  <div class="actions">
+    <div class="ui red basic cancel inverted button">
+      <i class="remove icon"></i> No
+    </div>
+    <div *ngIf="requestingBooks && givingBooks" (click)="denyTrade(confirmingTrade)" class="ui green inverted button">
+      <i class="checkmark icon"></i> Yes, the trade failed.
+    </div>
+  </div>
+</div>
+
+<!-- RETURN CONFIRM MODAL -->
+<div id="returnModal" class="ui basic modal">
+  <div class="ui icon header">
+    <i class="green reply icon"></i> Book Receival
+  </div>
+  <div *ngIf="returningBook" class="content">
+    <p style="text-align:center;">Have you received <b>{{returningBook.title}}</b> back?</p>
+  </div>
+  <div class="actions">
+    <div class="ui red basic cancel inverted button">
+      <i class="remove icon"></i> No
+    </div>
+    <div *ngIf="returningBook" (click)="returnBook(returningBook)" class="ui green basic ok inverted button">
+      <i class="checkmark icon"></i> Yes
+    </div>
+  </div>
+</div>
+<!-- DELETE CONFIRM MODAL -->
+<div id="deleteModal" class="ui basic modal">
+  <div class="ui icon header">
+    <i class="red trash icon"></i> Remove book
+  </div>
+  <div *ngIf="deletingBook" class="content">
+    <p style="text-align:center;">Are you sure you want to remove {{deletingBook.title}} from your list?</p>
+  </div>
+  <div class="actions">
+    <div class="ui red basic cancel inverted button">
+      <i class="remove icon"></i> No
+    </div>
+    <div *ngIf="deletingBook" (click)="deleteBook(deletingBook)" class="ui green basic ok inverted button">
+      <i class="checkmark icon"></i> Yes
+    </div>
+  </div>
+</div>
+<!-- DELETE PROGRESS -->
+<div id="deleteProgress" class="ui basic modal">
+  <div class="ui icon header">
+    <app-spinner></app-spinner>
+  </div>
+  <div class="content">
+  </div>
+</div>
+
+<br>

@@ -1,0 +1,45 @@
+<div id="editProfileModal" class="ui mini basic modal">
+  <i class="close icon"></i>
+  <div class="header">
+    Update your profile
+  </div>
+  <div class="content">
+    <form [formGroup]="profileForm" class="ui form" (ngSubmit)="onSubmit()">
+      <div [ngClass]="{error: name.errors && (name.touched||name.dirty)}" class="field">
+        <label>Name</label>
+        <input type="text" [formControl]="name" name="name" placeholder="Name">
+      </div>
+      <div [ngClass]="{error: email.errors && (email.touched||email.dirty)}" class="field">
+        <label>Email</label>
+        <input disabled type="text" [formControl]="email" name="email" placeholder="Email">
+      </div>
+      <div [ngClass]="{error: (phone.errors||!phoneFormat) && (phone.touched||phone.dirty)}" class="field">
+        <label>Phone</label>
+        <input type="text" [formControl]="phone" name="phone" placeholder="Phone">
+      </div>
+      <div [ngClass]="{error: location.errors && (location.touched||location.dirty)}" class="field">
+        <label>Location</label>
+        <!--<input type="text" [formControl]="location" name="location" placeholder="Location">-->
+        <select id="locDropdown" [formControl]="location" name="location" class="ui fluid dropdown">
+          <option *ngFor="let t of townshipList" value="{{t.name}} ({{t.name_mm}})" class="ui fluid dropdown">{{t.name}} ({{t.name_mm}})</option>
+        </select>
+      </div>
+      <div [ngClass]="{error: genres.errors && (genres.touched||genres.dirty)}" class="field">
+        <label>Genres</label>
+        <select id="editDrop" [formControl]="genres" class="ui fluid search multiple dropdown" multiple="">
+          <option *ngFor="let g of genresList" value="{{g}}">{{g}}</option>
+        </select>
+      </div>
+      <div style="visibility: hidden;display:none;" *ngIf="genresList && townshipList && user">
+        <div style="visibility: hidden;display:none;" *ngIf="initJquery()"></div>
+      </div>
+      
+      <div class="field">
+        <label>Favorite Quote</label>
+        <textarea [formControl]="quote" name="quote" placeholder="Favorite quote">
+        </textarea>
+      </div>
+      <input value="Update Profile" [ngClass]="{'disabled':!phoneFormat||profileForm.invalid}" type=submit class="right floated ui inverted blue button">
+    </form>
+  </div>
+</div>

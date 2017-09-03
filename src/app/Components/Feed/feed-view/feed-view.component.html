@@ -1,0 +1,31 @@
+<!--<app-nav-bar></app-nav-bar>-->
+
+<div *ngIf="cUser">
+    
+
+    <div id="progressModal" class="ui basic modal">
+        <div class="ui icon header">
+            <div id="progress" data-value="1" data-total="100" class="ui inverted indicating teal progress">
+                <div class="bar"></div>
+                <div class="label">Adding book...</div>
+            </div>
+        </div>
+        <div class="content">
+        </div>
+    </div>
+
+    <app-search></app-search>
+
+    <!-- ADD BUTTONS START -->
+    <!--<div style="margin-top:75px;" class="ui two column grid container">
+        <div class="column">
+            <button (click)="showAddBook()" class="right floated ui inverted pink labeled icon button"><i class="plus icon"></i>Add new book</button>
+        </div>
+        <div class="column">
+            <button onclick="showAddPost()" class="disabled ui inverted violet labeled icon button"><i class="plus icon"></i>Add new Post</button>
+        </div>
+    </div>-->
+    <!-- ADD BUTTONS END -->
+</div>
+<br>
+<app-book-list></app-book-list>

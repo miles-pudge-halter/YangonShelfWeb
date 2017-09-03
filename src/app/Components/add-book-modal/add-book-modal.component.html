@@ -1,0 +1,52 @@
+<!--- ADD BOOK MODAL START -->
+<div id="addBookModal" class="ui basic modal">
+  <i class="close icon"></i>
+  <div class="header">
+    Add a new book
+  </div>
+  <div class="content">
+    <div class="field">
+        <b>Book Cover</b><small> (Optional)</small><br>
+        <input type="file" name="bookCover" (change)="onFileChange($event)" accept=".png,.jpg,.jpeg,.gif"/>
+    </div>
+    <br>
+    <form [formGroup]="addBookForm" class="ui form" (ngSubmit)="onSubmit()">
+      <div class="fields">
+        <div [ngClass]="{error:title.errors&&(title.touched||title.dirty)}" class="field">
+          <label>Book Title</label>
+          <input type="text" [formControl]="title" name="title" placeholder="Book Title">
+        </div>
+        <div [ngClass]="{error:author.errors&&(author.touched||author.dirty)}" class="field">
+          <label>Author</label>
+          <input type="text" [formControl]="author" name="author" placeholder="Author">
+        </div>
+      </div>
+      <div [ngClass]="{error:genres.value.length<1 && (genres.touched||genres.dirty)}" class="field">
+        <label>Genres</label>
+        <select id="addDropDown" [formControl]="genres" class="ui fluid search multiple dropdown" multiple="">
+          <option *ngFor="let g of genresList" value="{{g}}">{{g}}</option>
+              <!--<option value="Romance">Romance</option>
+              <option value="Fiction">Fiction</option>
+              <option value="Horror">Horror</option>
+              <option value="Biography">Biography</option>
+              <option value="Science">Science</option>
+              <option value="Politics">Politics</option>
+              <option valye="Fantasy">Fantasy</option>-->
+        </select>
+      </div>
+      <div class="field">
+        <label>Description (Prologue)</label>
+        <textarea rows="3" [formControl]="description" name="description">
+        </textarea>
+      </div>    
+      <input [ngClass]="{'disabled':addBookForm.invalid}" type=submit class="ui inverted blue button">
+    </form>
+    <div class="ui divider"></div>
+    <div *ngIf="isLoading" class="ui centered grid">
+      <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
+      <div>Loading...</div>
+  </div>
+  </div>
+  
+</div>
+<!-- ADD BOOK MODAL END -->

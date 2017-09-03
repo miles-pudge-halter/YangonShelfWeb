@@ -1,0 +1,189 @@
+<!--- SIDE MENU START -->
+<div class="ui left demo vertical sidebar compact labeled icon menu">
+  <a (click)="goToProfile()" class="item">
+    <div class="ui avatar image"><img src="{{userProfileUrl}}" /></div>
+    <br><br> {{userName}}
+  </a>
+  <a (click)="goToFeed()" class="item">
+    <i class="newspaper icon"></i>Feed
+  </a>
+  <a (click)="logout()" class="item">
+    <i class="power icon"></i>Logout
+  </a>
+</div>
+<!--- SIDE MENU END -->
+<div class="ui container">
+  <div class="ui borderless top fixed small menu">
+    <a (click)="showSideBar()" id="sideMenuBtn" class="item">
+      <i class="content icon"></i>
+    </a>
+    <a id="navBrand" [routerLink]="['/']" class="item">
+      <img src="favicon.png" /><span style="font-family: 'Poiret One'!important; font-weight:bolder;font-size:22px;">&nbsp;yangon shelf</span>
+    </a>
+    <a (click)="showRightSideBar()" id="mobileNoti" class="ui right floated item">
+      <div class="ui red circular label" *ngIf="unseenNotis">{{unseenNotis.length}}</div>
+      <i class="big mail icon"></i>
+    </a>
+    <div id="rightMenu" class="right menu mobile hidden grid">
+      <a (click)="goToProfile()" class="ui labeled icon item">
+        <img src="{{userProfileUrl}}" /> &nbsp;&nbsp; {{userName}}
+      </a>
+      <a (click)="goToFeed()" class="ui item">
+        <i class="big newspaper icon"></i>
+      </a>
+      <!--<a class="ui item">
+        <i class="big  chat icon"></i>
+      </a>-->
+      <a id="noti" class="ui item">
+        <i style="margin-right:3px;" class="big mail icon"></i>
+        <div style="margin-left:0px;padding-left:0px;" class="ui red circular label" *ngIf="unseenNotis">{{unseenNotis.length}}</div>
+      </a>
+      <!-- POPUP START -->
+      <div id="popup" style="top: 559.222px; left: 1px; bottom: auto; right: auto; width: 960px;" class="ui fluid noti popup  bottom left transition hidden">
+        <!-- UNREAD -->
+        <div class="header">Unread</div>
+        <div class="ui very relaxed selection list">
+          <div *ngFor="let noti of unseenNotis" [routerLink]="['/trade',noti.tradeID]" style="color: black;" class="item">
+
+            <div class="ui mini image"><img src="http://graph.facebook.com/{{noti.requester.fbID}}/picture?type=square"></div>
+            <div class="content">
+              <a *ngIf="noti.type=='request'" class="header">
+                {{noti.requester.displayName}} requested {{noti.books.join(' ,')}} from you.
+              </a>
+              <a *ngIf="noti.type=='accept'" class="header">
+                {{noti.requester.displayName}} accepted your request for {{noti.books.join(' ,')}}.
+              </a>
+              <a *ngIf="noti.type=='deny'" class="header">
+                {{noti.requester.displayName}} denied your request for {{noti.books.join(' ,')}}.
+              </a>
+              <div class="description">{{noti.time}}</div>
+            </div>
+            <div class="right floated ui mini image">
+              <i *ngIf="noti.type=='request'" class="large blue exchange icon"></i>
+              <i *ngIf="noti.type=='accept'" class="large green check icon"></i>
+              <i *ngIf="noti.type=='deny'" class="large red ban icon"></i>
+            </div>
+
+            <!--<div *ngIf="noti.type=='request'" class="content">
+              <p>{{noti.requester.displayName}} requested {{noti.books.join(' ,')}} from you.</p>
+            </div>
+            <div *ngIf="noti.type=='accept'" class="content">
+              <p>{{noti.requester.displayName}} accepted your request for {{noti.books.join(' ,')}}</p>
+            </div>-->
+          </div>
+
+          <div *ngIf="unseenNotis && unseenNotis.length<1" class="ui segment">
+            No unread notifications.
+          </div>
+
+          <div *ngIf="!unseenNotis">
+            <app-spinner></app-spinner>
+          </div>
+        </div>
+
+        <!-- READ -->
+        <div class="header">Read</div>
+        <div class="ui very relaxed selection list">
+          <div *ngFor="let noti of seenNotis" [routerLink]="['/trade',noti.tradeID]" style="color: black;" class="item">
+
+            <div class="ui mini image"><img src="http://graph.facebook.com/{{noti.requester.fbID}}/picture?type=square"></div>
+            <div class="content">
+              <a *ngIf="noti.type=='request'" class="header">
+                {{noti.requester.displayName}} requested {{noti.books.join(' ,')}} from you. 
+              </a>
+              <a *ngIf="noti.type=='accept'" class="header">
+                {{noti.requester.displayName}} accepted your request for {{noti.books.join(' ,')}}.
+              </a>
+              <a *ngIf="noti.type=='deny'" class="header">
+                {{noti.requester.displayName}} denied your request for {{noti.books.join(' ,')}}.
+              </a>
+              <div class="description">{{noti.time}}</div>
+            </div>
+            <div class="right floated ui mini image">
+              <i *ngIf="noti.type=='request'" class="large blue exchange icon"></i>
+              <i *ngIf="noti.type=='accept'" class="large green check icon"></i>
+              <i *ngIf="noti.type=='deny'" class="large red ban icon"></i>
+            </div>
+          </div>
+
+          <div *ngIf="seenNotis && seenNotis.length<1" class="ui segment">
+            No unread notifications.
+          </div>
+
+          <div *ngIf="!seenNotis">
+            <app-spinner></app-spinner>
+          </div>
+        </div>
+      </div>
+      <!-- POPUP END -->
+
+
+      <a (click)="logout()" class="ui labeled icon item">
+        <i class="inverted red power icon"></i> &nbsp;&nbsp;Logout
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- RIGHT SIDE MENU -->
+<div id="noti-menu" class="ui right demo vertical sidebar menu">
+  <div class="item">
+    <div class="ui very relaxed selection list">
+      <div class="header">Unread</div>
+      <div *ngFor="let noti of unseenNotis" [routerLink]="['/trade',noti.tradeID]" style="color: black;" class="item">
+
+        <div class="ui mini image"><img src="http://graph.facebook.com/{{noti.requester.fbID}}/picture?type=square"></div>
+        <div class="content">
+          <a *ngIf="noti.type=='request'" class="header">
+                {{noti.requester.displayName}} requested {{noti.books.join(' ,')}} from you.
+              </a>
+          <a *ngIf="noti.type=='accept'" class="header">
+                {{noti.requester.displayName}} accepted your request for {{noti.books.join(' ,')}}
+              </a>
+          <a *ngIf="noti.type=='deny'" class="header">
+                {{noti.requester.displayName}} denied your request for {{noti.books.join(' ,')}}
+              </a>
+          <div class="description">{{noti.time}}</div>
+        </div>
+        <div class="right floated ui mini image">
+          <i *ngIf="noti.type=='request'" class="large blue exchange icon"></i>
+          <i *ngIf="noti.type=='accept'" class="large green check icon"></i>
+          <i *ngIf="noti.type=='deny'" class="large red ban icon"></i>
+        </div>
+      </div>
+      <div *ngIf="unseenNotis && unseenNotis.length<1" class="ui segment">
+        No unread notifications.
+      </div>
+      <div *ngIf="!unseenNotis">
+        <app-spinner></app-spinner>
+      </div>
+      <div class="header">Read</div>
+      <div *ngFor="let noti of seenNotis" style="color: black;" class="item">
+        <div class="ui mini image"><img src="http://graph.facebook.com/{{noti.requester.fbID}}/picture?type=square"></div>
+        <div class="content">
+          <a *ngIf="noti.type=='request'" class="header">
+                {{noti.requester.displayName}} requested {{noti.books.join(' ,')}} from you.
+              </a>
+          <a *ngIf="noti.type=='accept'" class="header">
+                {{noti.requester.displayName}} accepted your request for {{noti.books.join(' ,')}}
+              </a>
+          <a *ngIf="noti.type=='deny'" class="header">
+                {{noti.requester.displayName}} denied your request for {{noti.books.join(' ,')}}
+              </a>
+          <div class="description">{{noti.time}}</div>
+        </div>
+        <div class="right floated ui mini image">
+          <i *ngIf="noti.type=='request'" class="large blue exchange icon"></i>
+          <i *ngIf="noti.type=='accept'" class="large green check icon"></i>
+          <i *ngIf="noti.type=='deny'" class="large red ban icon"></i>
+        </div>
+      </div>
+      <div *ngIf="seenNotis && seenNotis.length<1" class="ui segment">
+        No read notifications.
+      </div>
+      <div *ngIf="!seenNotis">
+        <app-spinner></app-spinner>
+      </div>
+    </div>
+  </div>
+</div>

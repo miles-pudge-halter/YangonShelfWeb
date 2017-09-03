@@ -1,0 +1,108 @@
+<div style="margin-top:75px;" class="ui container">
+  <div class="ui centered grid">
+    <div *ngIf="requester" class="ui eight wide computer ten wide tablet sixteen wide mobile centered column">
+      <div class="ui items">
+        <div class="item">
+          <div class="ui tiny image">
+            <img src="http://graph.facebook.com/{{requester.fbID}}/picture?type=large">
+          </div>
+          <div class="content">
+            <div class="header">Details of requester
+            </div>
+            <div class="ui divider"></div>
+            <div class="meta">
+              <div class="ui large very relaxed list">
+                <div class="item"><i class="user icon"></i> &nbsp;Name : {{requester.displayName}}</div>
+                <div class="item"><i class="mail icon"></i> &nbsp;Email : {{requester.email}}</div>
+                <div class="item"><i class="map icon"></i>&nbsp; Location : {{requester.address}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui stackable two column centered grid">
+    <!-- SIDE 1 -->
+    <div class="column">
+      <div class="ui horizontal divider">
+        <h3>You</h3>
+      </div>
+
+      <div *ngIf="requester" class="ui piled segment">
+        <h3>You will give these books to {{requester.displayName}}</h3>
+        <div class="ui two stackable cards">
+          <div *ngFor="let book of requesteeBooks" class="ui mini raised card" id="{{book.$key}}">
+            <div style="padding-left: 5px;" class="content">
+              <div class="left floated ui mini image">
+                <img *ngIf="!book.bookCover" src="assets/dummyCover.png">
+                <img *ngIf="book.bookCover" src="{{book.bookCover}}}">
+              </div>
+              <div class="header">{{book.title}}</div>
+              <div class="meta">{{book.author}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-spinner *ngIf="!requester"></app-spinner>
+    </div>
+    <!--
+    <div class="divider-column">
+      <div class="ui vertical divider">
+        <h1><i class="large exchange icon"></i></h1>
+      </div>
+    </div>-->
+    <!-- SIDE 2 -->
+    <div class="column">
+      <div *ngIf="requester" class="ui horizontal divider">
+        <h3>{{requester.displayName}}</h3>
+      </div>
+      <app-spinner *ngIf="!requester"></app-spinner>
+      <div *ngIf="requester" class="ui piled segments">
+        <div class="ui yellow segment">
+          <h3>You will receive these books from {{requester.displayName}}</h3>
+          <app-spinner *ngIf="!requesterGivingBooks"></app-spinner>
+          <div id="giving2" [dragula]='"bag2"' class="ui two stackable cards">
+            <div *ngFor="let book of requesterGivingBooks" class="ui mini raised card" id="{{book.$key}}">
+              <div style="padding-left: 5px;" class="content">
+                <div class="left floated ui mini image">
+                  <img *ngIf="!book.bookCover" src="assets/dummyCover.png">
+                  <img *ngIf="book.bookCover" src="{{book.bookCover}}}">
+                </div>
+                <div class="header">{{book.title}}</div>
+                <div class="meta">{{book.author}}</div>
+              </div>
+            </div>
+            <div style="visibility:hidden;" class="ui mini raised card"></div>
+          </div>
+        </div>
+
+        <div *ngIf="requester" class="ui green segment">
+          <h3>{{requester.displayName}}'s books</h3>
+          <app-spinner *ngIf="!requesterHaveBooks"></app-spinner>
+          <div id="have2" [dragula]='"bag2"' [dragulaModel]='requesterHaveBooks' class="ui two stackable cards">
+            <div *ngFor="let book of requesterHaveBooks" class="ui mini raised card" id="{{book.$key}}">
+              <div style="padding-left: 5px;" class="content">
+                <div class="left floated ui mini image">
+                  <img *ngIf="!book.bookCover" src="assets/dummyCover.png">
+                  <img *ngIf="book.bookCover" src="{{book.bookCover}}}">
+                </div>
+                <div class="header">{{book.title}}</div>
+                <div class="meta">{{book.author}}</div>
+              </div>
+            </div>
+            <div style="visibility:hidden;" class="ui mini raised card"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ten wide centered column">
+      <div class="ui centered grid">
+        <!--<button [ngClass]="{'disabled':!checkAlter()}" (click)="counterOffer()" class="ui inverted blue circular button">Counter Offer trade</button>-->
+        <button [ngClass]="{'disabled':checkAlter()}" (click)="acceptTrade()" class="ui inverted green circular  button">Accept Trade</button>
+        <button (click)="denyTrade()" class="ui inverted red circular button">Deny Trade</button>
+      </div>
+    </div>
+  </div>
+
+</div>
